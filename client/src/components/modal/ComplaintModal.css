@@ -1,0 +1,62 @@
+.complaint-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(226, 232, 240);
+  max-width: 650px;
+}
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #130fc2;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.5rem 1.5rem;
+}
+.close-button:hover {
+  background-color: #ababab;
+}
+
+.modal-content {
+  padding: 5rem 3rem;
+  border: 2px solid #d9d9d9;
+  border-radius: 12px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  /* padding: 24px; */
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* max-width: 350px; */
+}
+.modal-body-title {
+  color: #130fc2;
+  font-size: 20px;
+}
+
+.modal-body {
+  font-size: 18px;
+  color: #666;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

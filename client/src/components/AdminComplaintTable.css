@@ -1,0 +1,109 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+  overflow: auto; /* add overflow property for scrollbar */
+}
+
+thead th {
+  text-align: left;
+  padding: 10px; /* reduce padding for header cells */
+  color: #fff;
+}
+
+thead th.sn-col {
+  width: 5%;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+thead th.name-col {
+  width: 15%;
+}
+
+thead th.email-col {
+  width: 15%;
+}
+
+thead th.level-col {
+  width: 5%;
+}
+
+thead th.phone-col {
+  width: 10%;
+}
+
+thead th.title-a-col {
+  width: 50%;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+tbody td {
+  text-align: left;
+  padding: 10px; /* reduce padding for body cells */
+}
+
+tbody .sn-col {
+  padding-left: 15px;
+}
+
+tbody tr:hover {
+  background-color: #ababab;
+}
+
+@media only screen and (max-width: 768px) {
+  /* change the table layout for small screens */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    overflow: auto; /* add overflow property for scrollbar */
+  }
+
+  thead th {
+    font-size: 14px;
+  }
+
+  tbody td {
+    font-size: 14px;
+  }
+
+  thead {
+    display: none; /* hide the table header on small screens */
+  }
+
+  tbody tr {
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+  }
+
+  tbody td::before {
+    /* add the table header before each cell */
+    content: attr(data-th);
+    font-weight: bold;
+    display: inline-block;
+    width: 120px;
+    color: #555;
+  }
+
+  tbody td:last-child {
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  tbody td:nth-child(1) {
+    border-top-left-radius: 10px;
+    padding-top: 10px;
+  }
+
+  tbody td:nth-child(6) {
+    border-top-right-radius: 10px;
+    padding-bottom: 10px;
+  }
+
+  tbody td:nth-child(n + 2):nth-child(-n + 5) {
+    /* hide the first column (S/N) on small screens */
+    display: none;
+  }
+}
