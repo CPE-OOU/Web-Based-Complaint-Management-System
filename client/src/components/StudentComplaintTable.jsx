@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./StudentComplaintTable.css"; // Import the CSS file for this component
 import ComplaintModal from "./modal/ComplaintModal";
 
 const StudentComplaintTable = () => {
@@ -14,14 +13,13 @@ const StudentComplaintTable = () => {
     const fetchData = async () => {
       const response = await fetch("complaintsData.json");
       const data = await response.json();
-      setComplaints(data); // set the initial data as complaints
-      setFilteredComplaints(data); // set the initial data as filtered complaints
+      setComplaints(data);
+      setFilteredComplaints(data);
     };
     fetchData();
   }, []);
 
   useEffect(() => {
-    // update the filtered complaints whenever the selected option or search query changes
     const filtered = complaints.filter((complaint) => {
       const complaintDate = new Date(complaint.dateCreated);
       const currentDate = new Date();
@@ -88,9 +86,9 @@ const StudentComplaintTable = () => {
 
   return (
     <>
-      <div className=" flex flex-col gap-10 mx-auto container border-2 py-[50px] px-[15px] rounded-2xl border-[#D9D9D9] ">
-        <div className=" flex flex-row gap-4 justify-between rounded-xl ">
-          <div className=" w-full max-w-[816px] flex flex-row items-center pl-[10px] gap-2 text-xl border-2 rounded-xl border-[#D9D9D9] ">
+      <div className="flex flex-col gap-10 mx-auto container border-2 py-[50px] px-[15px] rounded-2xl border-[#D9D9D9]">
+        <div className="flex flex-col md:flex-row gap-4 justify-between rounded-xl">
+          <div className="w-full max-w-[816px] flex flex-row items-center pl-[10px] gap-2 text-xl border-2 rounded-xl border-[#D9D9D9]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -104,14 +102,14 @@ const StudentComplaintTable = () => {
             </svg>
             <input
               type="text"
-              className=" w-full pl-4 py-4 border-[#D9D9D9] rounded-xl "
+              className="w-full pl-4 py-4 border-[#D9D9D9] rounded-xl"
               placeholder="Search for Complaint"
               value={searchQuery}
               onChange={handleSearch}
             />
           </div>
           <select
-            className="max-w-[180px] w-full flex flex-row px-6 py-4 border-[#D9D9D9] border-2 rounded-xl"
+            className="max-w-full md:max-w-[180px] w-full flex flex-row px-6 py-4 border-[#D9D9D9] border-2 rounded-xl"
             value={selectedOption}
             onChange={handleOptionChange}
           >
@@ -122,64 +120,43 @@ const StudentComplaintTable = () => {
             <option value="Past Year">Past year</option>
           </select>
         </div>
-        <section>
-          <table>
-            <thead style={{ backgroundColor: "#130FC2" }}>
-              <tr style={{ borderRadius: "10px" }}>
-                <th
-                  style={{
-                    borderTopLeftRadius: "10px",
-                    borderBottomLeftRadius: "10px",
-                  }}
-                  className="sn-col"
-                >
-                  S/N
-                </th>
-                <th className="title-com-col">Complaint Title</th>
-                <th className="status">Status</th>
-                <th
-                  style={{
-                    borderTopRightRadius: "10px",
-                    borderBottomRightRadius: "10px",
-                  }}
-                  className="date-col"
-                >
-                  Date Created
-                </th>
+        <section className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="py-2 px-4">S/N</th>
+                <th className="py-2 px-4">Complaint Title</th>
+                <th className="py-2 px-4">Status</th>
+                <th className="py-2 px-4">Date Created</th>
               </tr>
             </thead>
             <tbody>
               {filteredComplaints.map((complaint, index) => (
                 <tr
                   key={complaint.id}
-                  onClick={() => {
-                    setSelectedComplaint(complaint);
-                    setShowModal(true);
-                  }}
-                  style={{
-                    backgroundColor:
-                      showModal && complaint.id === selectedComplaint.id
-                        ? "#ababab"
-                        : "",
-                  }}
+                  onClick={() => handleComplaintClick(complaint)}
+                  className={
+                    showModal && complaint.id === selectedComplaint?.id
+                      ? "bg-gray-400"
+                      : ""
+                  }
                 >
-                  <td className="sn-col">{index + 1}</td>
-                  <td className="title-col">{complaint.title}</td>
-                  <td className="status" >{complaint.status}</td>
-                  <td>{complaint.dateCreated}</td>
+                  <td className="py-2 px-4">{index + 1}</td>
+                  <td className="py-2 px-4">{complaint.title}</td>
+                  <td className="py-2 px-4">{complaint.status}</td>
+                  <td className="py-2 px-4">{complaint.dateCreated}</td>
                 </tr>
               ))}
             </tbody>
-            {showModal && (
-              <ComplaintModal
-                complaint={selectedComplaint}
-                setShowModal={setShowModal}
-              />
-            )}
           </table>
         </section>
 
-        <div>You have selected: {selectedOption ? selectedOption : "All"}</div>
+        {showModal && (
+          <ComplaintModal
+            complaint={selectedComplaint}
+            setShowModal={setShowModal}
+          />
+        )}
       </div>
     </>
   );
