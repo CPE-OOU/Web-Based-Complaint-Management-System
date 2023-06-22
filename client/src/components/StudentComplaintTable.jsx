@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from "react";
 import ComplaintModal from "./modal/ComplaintModal";
+import db from "../firebase";
 
 const StudentComplaintTable = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
-  const [complaints, setComplaints] = useState([]);
   const [filteredComplaints, setFilteredComplaints] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // New state variable
+  const [complaints, setComplaints] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("complaintsData.json");
-      const data = await response.json();
-      setComplaints(data);
-      setFilteredComplaints(data);
-    };
-    fetchData();
+    const unsubscribe = db.collection("complaints").onSnapshot((snapshot) => {
+      const complaintData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setComplaints(complaintData);
+      setIsLoading(false); // Set isLoading to false once data is fetched
+    });
+
+    return () => unsubscribe(); // Cleanup the listener when the component unmounts
   }, []);
 
   useEffect(() => {
@@ -121,34 +126,48 @@ const StudentComplaintTable = () => {
           </select>
         </div>
         <section className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-200">
-              <tr>
-                <th className="py-2 px-4">S/N</th>
-                <th className="py-2 px-4">Complaint Title</th>
-                <th className="py-2 px-4">Status</th>
-                <th className="py-2 px-4">Date Created</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredComplaints.map((complaint, index) => (
-                <tr
-                  key={complaint.id}
-                  onClick={() => handleComplaintClick(complaint)}
-                  className={
-                    showModal && complaint.id === selectedComplaint?.id
-                      ? "bg-gray-400"
-                      : ""
-                  }
-                >
-                  <td className="py-2 px-4">{index + 1}</td>
-                  <td className="py-2 px-4">{complaint.title}</td>
-                  <td className="py-2 px-4">{complaint.status}</td>
-                  <td className="py-2 px-4">{complaint.dateCreated}</td>
+          {isLoading ? ( // Display loader if isLoading is true
+            <div className="flex justify-center items-center h-32">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+            </div>
+          ) : (
+            <table className="w-full">
+              <thead className="bg-oou-purple text-white text-left ">
+                <tr>
+                  <th className="py-2 px-4">S/N</th>
+                  <th className="py-2 px-4">Complaint Title</th>
+                  <th className="py-2 px-4">Status</th>
+                  <th className="py-2 px-4">Date Created</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredComplaints.map((complaint, index) => (
+                  <tr
+                    key={complaint.id}
+                    onClick={() => handleComplaintClick(complaint)}
+                    style={{
+                      borderBottom: `2px solid ${
+                        showModal && complaint.id === selectedComplaint?.id
+                          ? "#000000"
+                          : "#D9D9D9"
+                      }`,
+                      cursor: "pointer",
+                    }}
+                    className={
+                      showModal && complaint.id === selectedComplaint?.id
+                        ? "bg-gray-400  "
+                        : "hover:bg-oou-purple hover:text-white"
+                    }
+                  >
+                    <td className="py-2 px-4">{index + 1}</td>
+                    <td className=" capitalize py-2 px-4">{complaint.title}</td>
+                    <td className="py-2 px-4">{complaint.status}</td>
+                    <td className="py-2 px-4">{complaint.dateCreated}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </section>
 
         {showModal && (

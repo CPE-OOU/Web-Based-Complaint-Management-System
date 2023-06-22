@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./ComplaintModal.css";
 
 const ComplaintModal = ({
   complaint,
@@ -19,57 +18,69 @@ const ComplaintModal = ({
   };
   return (
     <>
-      <div className="complaint-modal" show={true} onHide={onHide}>
-        <span className="close-button" onClick={handleCloseModal}>
-          &times;
-        </span>
+      <div className="fixed inset-0 flex items-center justify-center z-50 max-w-[850px] w-full mx-auto">
+        <div className="fixed inset-0 bg-black opacity-50"></div>
+        <div className="relative bg-white rounded-lg shadow-lg overflow-y-auto max-h-[90vh]">
+          <span
+            className="hidden md:flex absolute top-0 right-0 m-4 text-gray-500 cursor-pointer"
+            onClick={handleCloseModal}
+          >
+            &times;
+          </span>
 
-        <div className="modal-content">
-          <h2 className="modal-title ">{complaint.title}</h2>
-          <div class="relative flex flex-row items-center gap-2 ">
-            <label class=" modal-body-title font-semibold" for="status">
-              Status:
-            </label>
-            <select
-              id="status"
-              value={status}
-              onChange={handleStatusChange}
-              class="form-select block w-26 pr-10 py-2 pl-3 text-base leading-6 border-slate-300 focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-            >
-              <option value="in progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-              <option value="closed">Closed</option>
-            </select>
+          <div className="md:mt-10 p-4">
+            <h2 className="text-xl text-center font-bold mb-4">
+              {complaint.title}
+            </h2>
+            <div className="flex flex-col md:flex-row items-center gap-2 mb-4">
+              <label className="font-semibold" htmlFor="status">
+                Status:
+              </label>
+              <select
+                id="status"
+                value={status}
+                onChange={handleStatusChange}
+                className="form-select"
+              >
+                <option value="in progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+            <div className="text-[12px] md:text-base mb-4">
+              <p className=" flex flex-col gap-2 md:flex-row ">
+                <strong>Date Created:</strong> {complaint.dateCreated}
+              </p>
+              <p className=" flex flex-col gap-2 md:flex-row ">
+                <strong>Name:</strong>
+                <p>
+                  {complaint.firstName} {complaint.lastName}
+                </p>
+              </p>
+              <p className=" flex flex-col gap-2 md:flex-row ">
+                <strong>Email:</strong> {complaint.email}
+              </p>
+              <p className=" flex flex-col gap-2 md:flex-row ">
+                <strong>Student Year:</strong> {complaint.studentYear}
+              </p>
+              <p className=" flex flex-col gap-2 md:flex-row ">
+                <strong>Phone:</strong> {complaint.phone}
+              </p>
+              <p className=" flex flex-col gap-2 md:flex-row ">
+                <strong>Report To:</strong> {complaint.reportTo}
+              </p>
+              <p className=" flex flex-col gap-2 md:flex-row ">
+                <strong>Description:</strong> {complaint.description}
+              </p>
+            </div>
           </div>
-          <div className=" modal-body ">
-            <p>
-              <strong className=" modal-body-title ">Date Created:</strong>{" "}
-              {complaint.dateCreated}
-            </p>
-            <p>
-              <strong className=" modal-body-title ">Name:</strong>{" "}
-              {complaint.firstName} {complaint.lastName}
-            </p>
-            <p>
-              <strong className=" modal-body-title ">Email:</strong>{" "}
-              {complaint.email}
-            </p>
-            <p>
-              <strong className=" modal-body-title ">Student Year:</strong>{" "}
-              {complaint.studentYear}
-            </p>
-            <p>
-              <strong className=" modal-body-title ">Phone:</strong>{" "}
-              {complaint.phone}
-            </p>
-            <p>
-              <strong className=" modal-body-title ">Report To:</strong>{" "}
-              {complaint.reportTo}
-            </p>
-            <p>
-              <strong className=" modal-body-title ">Description:</strong>{" "}
-              {complaint.description}
-            </p>
+          <div className=" flex justify-center  ">
+            <span
+              className=" flex w-full max-w-[100px] rounded-full justify-center  py-2 bg-red-600 text-white md:hidde cursor-pointer"
+              onClick={handleCloseModal}
+            >
+              Close{" "}
+            </span>
           </div>
         </div>
       </div>

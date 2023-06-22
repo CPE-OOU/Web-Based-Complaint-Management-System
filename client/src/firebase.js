@@ -20,14 +20,6 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-// Cloud Function to create a user document in Firestore upon signup
-// exports.createUserDoc = functions.auth.user().onCreate((user) => {
-//   return db.collection("users").doc(user.uid).set({
-//     firstName: user.displayName.split(" ")[0],
-//     lastName: user.displayName.split(" ")[1],
-//     email: user.email
-//   });
-// });
 
 export { auth };
 export default db;

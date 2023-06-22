@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./AdminComplaintTable.css"; // Import the CSS file for this component
 import ComplaintModal from "./modal/ComplaintModal";
 import ReportGenerator from "./ReportGenerator";
 
