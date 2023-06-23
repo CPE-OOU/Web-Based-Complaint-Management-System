@@ -1,10 +1,11 @@
 import { Formik, useFormik } from "formik";
 import * as yup from "yup";
-import React, { useState } from "react";
-import db from "../../firebase";
+import React, { useState, useEffect } from "react";
+import db, { auth } from "../../firebase";
 
 const LodgeComplaint = ({ handleCloseModal }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Add isLoading state
 
   const formik = useFormik({
     initialValues: {
@@ -34,7 +35,17 @@ const LodgeComplaint = ({ handleCloseModal }) => {
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        values.dateCreated = new Date().toISOString().split("T")[0]; // Set the current date as the dateCreated
+        setIsLoading(true); // Set isLoading to true when submitting the form
+
+        // embedding the tags from the auth database
+        // Get the currently logged-in user
+        const currentUser = auth.currentUser;
+
+        // Add the user identifier to the complaint data
+        values.userId = currentUser.uid;
+
+        const dateCreated = new Date().toLocaleDateString();
+        values.dateCreated = dateCreated;
         values.status = "In Progress";
         await db.collection("complaints").add(values);
         console.log("Form data submitted successfully!");
@@ -42,9 +53,21 @@ const LodgeComplaint = ({ handleCloseModal }) => {
         resetForm();
       } catch (error) {
         console.error("Error submitting form data:", error);
+      } finally {
+        setIsLoading(false); // Set isLoading to false after submission
       }
     },
   });
+
+  // Set initial values from authentication database
+  const { displayName, email } = auth.currentUser;
+
+  useEffect(() => {
+    formik.setFieldValue("firstName", displayName.split(" ")[0]);
+    formik.setFieldValue("lastName", displayName.split(" ")[1]);
+    formik.setFieldValue("email", email);
+  }, [displayName, email]);
+
   const selectStyle = {
     backgroundImage: "url('/assets/icon/carret-down.svg')",
     backgroundRepeat: "no-repeat",
@@ -276,7 +299,13 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                         transition: "all 0.3s ease",
                       }}
                     >
-                      Submit
+                      {isLoading ? ( // Display loader if isLoading is true
+                        <div className="flex justify-center items-center h-5">
+                          <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-purple-500"></div>
+                        </div>
+                      ) : (
+                        "Submit"
+                      )}
                     </button>
                     <span
                       style={{

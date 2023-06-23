@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ComplaintModal from "./modal/ComplaintModal";
-import db from "../firebase";
+import db, { auth } from "../firebase";
 
 const StudentComplaintTable = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -12,16 +12,26 @@ const StudentComplaintTable = () => {
   const [complaints, setComplaints] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = db.collection("complaints").onSnapshot((snapshot) => {
-      const complaintData = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setComplaints(complaintData);
-      setIsLoading(false); // Set isLoading to false once data is fetched
-    });
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      setIsLoading(true);
+      const unsubscribe = db
+        .collection("complaints")
+        .where("userId", "==", currentUser.uid)
+        .onSnapshot((snapshot) => {
+          const complaintData = [];
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            complaintData.push({ id: doc.id, ...data });
+          });
+          setComplaints(complaintData);
+          setIsLoading(false);
+        });
 
-    return () => unsubscribe(); // Cleanup the listener when the component unmounts
+      return () => {
+        unsubscribe();
+      };
+    }
   }, []);
 
   useEffect(() => {
@@ -84,16 +94,11 @@ const StudentComplaintTable = () => {
     setSelectedComplaint(complaint);
     setShowModal(true);
   };
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
   return (
     <>
       <div className="flex flex-col gap-10 mx-auto container border-2 py-[50px] px-[15px] rounded-2xl border-[#D9D9D9]">
         <div className="flex flex-col md:flex-row gap-4 justify-between rounded-xl">
-          <div className="w-full max-w-[816px] flex flex-row items-center pl-[10px] gap-2 text-xl border-2 rounded-xl border-[#D9D9D9]">
+          <div className=" bg-white w-full max-w-[816px] flex flex-row items-center pl-[10px] text-xl border-2 rounded-xl border-[#D9D9D9]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -107,8 +112,8 @@ const StudentComplaintTable = () => {
             </svg>
             <input
               type="text"
-              className="w-full pl-4 py-4 border-[#D9D9D9] rounded-xl"
-              placeholder="Search for Complaint"
+              className="w-full pl-1 py-2 h-full border-[#D9D9D9] rounded-xl"
+              placeholder="Search for Complaint by title"
               value={searchQuery}
               onChange={handleSearch}
             />
@@ -130,14 +135,18 @@ const StudentComplaintTable = () => {
             <div className="flex justify-center items-center h-32">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
             </div>
+          ) : filteredComplaints.length === 0 ? (
+            <div className="flex justify-center items-center h-32">
+              <p>No complaints found.</p>
+            </div>
           ) : (
             <table className="w-full">
               <thead className="bg-oou-purple text-white text-left ">
                 <tr>
-                  <th className="py-2 px-4">S/N</th>
+                  <th className="py-2 px-4 rounded-l-xl ">S/N</th>
                   <th className="py-2 px-4">Complaint Title</th>
                   <th className="py-2 px-4">Status</th>
-                  <th className="py-2 px-4">Date Created</th>
+                  <th className="py-2 px-4 rounded-r-xl ">Date Created</th>
                 </tr>
               </thead>
               <tbody>

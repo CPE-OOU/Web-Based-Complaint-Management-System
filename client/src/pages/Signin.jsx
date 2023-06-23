@@ -86,13 +86,13 @@ const Signin = () => {
                   Forgot password?
                 </button>
                 <button
-                  className="bg-oou-blue text-white py-3 px-6 rounded-lg font-bold"
+                  className="bg-oou-blue text-white py-3 px-6 w-fit rounded-lg font-bold"
                   type="submit"
                   disabled={isLoading} // disable the button when loading
                 >
                   {isLoading ? (
-                    <div className="flex justify-center items-center">
-                      <div className="w-6 h-6 border-4 border-t-4 border-gray-200 rounded-full animate-spin"></div>
+                    <div className="flex justify-center items-center w-full h-5">
+                      <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-purple-500"></div>
                     </div>
                   ) : (
                     "Sign In"

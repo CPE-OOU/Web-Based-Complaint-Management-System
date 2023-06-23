@@ -142,25 +142,8 @@ const Signup = () => {
                 type="submit"
               >
                 {formik.isSubmitting && (
-                  <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
-                    <svg
-                      className="animate-spin h-5 w-5 text-white"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM12 20a8 8 0 01-8-8H0c0 6.627 5.373 12 12 12v-4zm4-7.291A7.962 7.962 0 0120 12h-4c0 3.042-1.135 5.824-3 7.938l3-2.647z"
-                      />
-                    </svg>
+                  <div className="flex justify-center items-center h-5">
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-purple-500"></div>
                   </div>
                 )}
                 {!formik.isSubmitting && "Sign up"}
