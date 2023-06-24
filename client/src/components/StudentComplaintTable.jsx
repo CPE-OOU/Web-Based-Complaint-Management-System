@@ -8,30 +8,35 @@ const StudentComplaintTable = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
   const [filteredComplaints, setFilteredComplaints] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // New state variable
+  const [isLoading, setIsLoading] = useState(true);
   const [complaints, setComplaints] = useState([]);
 
   useEffect(() => {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      setIsLoading(true);
-      const unsubscribe = db
-        .collection("complaints")
-        .where("userId", "==", currentUser.uid)
-        .onSnapshot((snapshot) => {
-          const complaintData = [];
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            complaintData.push({ id: doc.id, ...data });
+    const unsubscribeAuth = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoading(true);
+        const unsubscribe = db
+          .collection("complaints")
+          .where("userId", "==", user.uid)
+          .onSnapshot((snapshot) => {
+            const complaintData = [];
+            snapshot.forEach((doc) => {
+              const data = doc.data();
+              complaintData.push({ id: doc.id, ...data });
+            });
+            setComplaints(complaintData);
+            setIsLoading(false);
           });
-          setComplaints(complaintData);
-          setIsLoading(false);
-        });
 
-      return () => {
-        unsubscribe();
-      };
-    }
+        return () => {
+          unsubscribe();
+        };
+      }
+    });
+
+    return () => {
+      unsubscribeAuth();
+    };
   }, []);
 
   useEffect(() => {
@@ -94,10 +99,12 @@ const StudentComplaintTable = () => {
     setSelectedComplaint(complaint);
     setShowModal(true);
   };
+
   return (
     <>
       <div className="flex flex-col gap-10 mx-auto container border-2 py-[50px] px-[15px] rounded-2xl border-[#D9D9D9]">
         <div className="flex flex-col md:flex-row gap-4 justify-between rounded-xl">
+          {/* Search input */}
           <div className=" bg-white w-full max-w-[816px] flex flex-row items-center pl-[10px] text-xl border-2 rounded-xl border-[#D9D9D9]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -118,6 +125,7 @@ const StudentComplaintTable = () => {
               onChange={handleSearch}
             />
           </div>
+          {/* Filter select */}
           <select
             className="max-w-full md:max-w-[180px] w-full flex flex-row px-6 py-4 border-[#D9D9D9] border-2 rounded-xl"
             value={selectedOption}
@@ -131,7 +139,7 @@ const StudentComplaintTable = () => {
           </select>
         </div>
         <section className="overflow-x-auto">
-          {isLoading ? ( // Display loader if isLoading is true
+          {isLoading ? (
             <div className="flex justify-center items-center h-32">
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
             </div>
@@ -143,10 +151,10 @@ const StudentComplaintTable = () => {
             <table className="w-full">
               <thead className="bg-oou-purple text-white text-left ">
                 <tr>
-                  <th className="py-2 px-4 rounded-l-xl ">S/N</th>
-                  <th className="py-2 px-4">Complaint Title</th>
-                  <th className="py-2 px-4">Status</th>
-                  <th className="py-2 px-4 rounded-r-xl ">Date Created</th>
+                  <th className="py-2 px-4 rounded-l-xl">S/N</th>
+                  <th className="py-2 px-4">Title</th>
+                  <th className="py-2 px-4">Date Created</th>
+                  <th className="py-2 px-4 rounded-r-xl">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -178,14 +186,13 @@ const StudentComplaintTable = () => {
             </table>
           )}
         </section>
-
-        {showModal && (
-          <ComplaintModal
-            complaint={selectedComplaint}
-            setShowModal={setShowModal}
-          />
-        )}
       </div>
+      {showModal && (
+        <ComplaintModal
+          complaint={selectedComplaint}
+          setShowModal={setShowModal}
+        />
+      )}
     </>
   );
 };

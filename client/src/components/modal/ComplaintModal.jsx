@@ -1,22 +1,11 @@
 import { Icon } from "@iconify/react";
 import React, { useState } from "react";
 
-const ComplaintModal = ({
-  complaint,
-  showModal,
-  setShowModal,
-  onHide,
-  onStatusChange,
-}) => {
+const ComplaintModal = ({ complaint, setShowModal }) => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
-  const [status, setStatus] = useState(complaint.status);
 
-  const handleStatusChange = (e) => {
-    setStatus(e.target.value);
-    onStatusChange(complaint.id, e.target.value);
-  };
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center z-50 max-w-[450px]  w-full mx-auto">
@@ -27,7 +16,10 @@ const ComplaintModal = ({
             onClick={handleCloseModal}
           >
             {/* &times; */}
-            <Icon className=" text-2xl text-red-600 " icon="carbon:close-filled" />
+            <Icon
+              className=" text-2xl text-red-600 "
+              icon="carbon:close-filled"
+            />
           </span>
 
           <div className=" w-full p-4">

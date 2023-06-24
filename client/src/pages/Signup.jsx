@@ -35,13 +35,23 @@ const Signup = () => {
     onSubmit: async (values) => {
       try {
         const { firstName, lastName, email, password } = values;
+
         const userCredential = await auth.createUserWithEmailAndPassword(
           email,
           password
         );
+
+        const userId = userCredential.user.uid; // Get the generated user ID
+
         await userCredential.user.updateProfile({
           displayName: `${firstName} ${lastName}`,
         });
+
+        // Create a complaints collection specific to the user
+        await db.collection("users").doc(userId).collection("complaints").add({
+          // Add any initial data for the complaints collection
+        });
+
         // User is signed up and user document has been created in Firestore
         alert("Thanks for signing up, now press okay to go to the SignIn page");
         window.location.href = "/";

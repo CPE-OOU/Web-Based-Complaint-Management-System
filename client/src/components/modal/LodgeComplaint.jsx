@@ -124,7 +124,7 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                   onSubmit={formik.handleSubmit}
                 >
                   <div className="flex text-left flex-row flex-wrap gap-2 justify-between">
-                    <label className="w-full max-w-[230px] gap-2  text-sm font-medium flex flex-col ">
+                    <label className="w-full max-w-[250px] gap-2  text-sm font-medium flex flex-col ">
                       First Name
                       <input
                         className="  text-sm font-normal py-3   px-2  border border-solid border-oou-purple rounded-lg "
@@ -140,7 +140,7 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                         </div>
                       ) : null}
                     </label>
-                    <label className="w-full max-w-[230px] gap-2  text-sm font-medium flex flex-col ">
+                    <label className="w-full max-w-[250px] gap-2  text-sm font-medium flex flex-col ">
                       Last Name
                       <input
                         autoComplete="family-name"
@@ -158,7 +158,7 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                     </label>
                   </div>
                   <div className="flex text-left flex-row flex-wrap gap-2 justify-between">
-                    <label className="w-full max-w-[230px] gap-2  text-sm font-medium flex flex-col ">
+                    <label className="w-full max-w-[250px] gap-2  text-sm font-medium flex flex-col ">
                       Email Address
                       <input
                         autoComplete="email"
@@ -174,7 +174,7 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                         </div>
                       ) : null}
                     </label>
-                    <label className="w-full max-w-[230px] gap-2  text-sm font-medium flex flex-col ">
+                    <label className="w-full max-w-[250px] gap-2  text-sm font-medium flex flex-col ">
                       Student Year
                       <input
                         className="  text-sm font-normal py-3   px-2  border border-solid border-oou-purple rounded-lg "
@@ -193,7 +193,7 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                   </div>
 
                   <div className="flex text-left flex-row flex-wrap gap-2 justify-between">
-                    <label className="w-full max-w-[230px] gap-2  text-sm font-medium flex flex-col ">
+                    <label className="w-full max-w-[250px] gap-2  text-sm font-medium flex flex-col ">
                       Phone Number
                       <input
                         className="  text-sm font-normal py-3   px-2  border border-solid border-oou-purple rounded-lg "
@@ -208,7 +208,7 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                         </div>
                       ) : null}
                     </label>
-                    <label className="w-full max-w-[230px] gap-2  text-sm font-medium flex flex-col ">
+                    <label className="w-full max-w-[250px] gap-2  text-sm font-medium flex flex-col ">
                       Matriculation Number
                       <input
                         className="  text-sm font-normal py-3   px-2  border border-solid border-oou-purple rounded-lg "
@@ -225,7 +225,7 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                     </label>
                   </div>
                   <div className="flex text-left flex-row flex-wrap gap-2 justify-between">
-                    <label className="w-full max-w-[380px] gap-2  text-sm font-medium flex flex-col ">
+                    <label className="w-full max-w-[250px] gap-2  text-sm font-medium flex flex-col ">
                       Complaint Title
                       <input
                         className="  text-sm font-normal py-3   px-2  border border-solid border-oou-purple rounded-lg "
@@ -240,7 +240,7 @@ const LodgeComplaint = ({ handleCloseModal }) => {
                         </div>
                       ) : null}
                     </label>
-                    <label className="w-full max-w-[100px] gap-2  text-sm font-medium flex flex-col">
+                    <label className="w-full max-w-[250px] gap-2 justify-between text-sm font-medium flex flex-col">
                       Report To
                       <select
                         className={`text-sm font-normal py-3   px-2  border border-solid border-oou-purple rounded-lg ${

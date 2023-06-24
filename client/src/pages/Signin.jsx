@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import { Formik, useFormik } from "formik";
@@ -22,8 +22,20 @@ const Signin = () => {
     onSubmit: async (values, event) => {
       try {
         setIsLoading(true); // set isLoading state to true
-        await auth.signInWithEmailAndPassword(values.email, values.password);
-        navigate("/student");
+        const { email, password } = values;
+
+        await auth.signInWithEmailAndPassword(email, password);
+
+        // Get the current user
+        const user = auth.currentUser;
+
+        if (user) {
+          const userId = user.uid; // Get the user ID
+
+          // Use the userId to perform any necessary operations
+
+          navigate("/student");
+        }
       } catch (error) {
         console.error(error);
         // Handle sign-in errors here
@@ -39,6 +51,7 @@ const Signin = () => {
       }
     },
   });
+
   return (
     <div>
       <div className="flex justify-center items-center min-h-screen">
@@ -101,15 +114,24 @@ const Signin = () => {
               </div>
             </form>
           </Formik>
-          <div className="text-center text-sm font-bold">
-            <p>Don’t have an account?</p>
-            <Link className="text-oou-blue" to="/sign-up">
-              Register
-            </Link>
+          <div className=" flex w-full justify-between text-left" >
+            <div className=" text-sm font-bold">
+              <p>Don’t have an account?</p>
+              <Link className="text-oou-blue" to="/sign-up">
+                Register
+              </Link>
+            </div>
+            <div className="text-right text-sm font-bold">
+              <p>Admin?</p>
+              <Link className="text-oou-blue" to="/admin-signin">
+                Admin Login
+              </Link>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 export default Signin;

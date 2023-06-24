@@ -32,18 +32,20 @@ const Student = () => {
   };
 
   useEffect(() => {
-    // Get the authenticated user's display name
+    // Get the authenticated user's display name and user ID
     const user = auth.currentUser;
     if (user) {
       setUserName(user.displayName);
+      const userId = user.uid;
+      // Use the userId to perform any necessary operations
     }
+
     // Check if there is a new notification
     // ...
 
     // Set the hasNewNotification state
     setHasNewNotification(false);
   }, []);
-
   useEffect(() => {
     const handleWindowResize = () => {
       if (window.innerWidth > 768) {
@@ -137,8 +139,8 @@ const Student = () => {
         <header className="inside-page mx-auto mt-8 lg:mt-36 flex justify-center bg-img">
           <div className="flex flex-col justify-center text-center items-center gap-6 self-center max-w-[850px] px-6">
             <div className=" flex text-2xl  ">
-              <p className="text-gray-600">Hello, &nbsp; </p>
-              <p className=" uppercase font-bold " > {userName} </p>
+              <p className="text-gray-600">Hello,&nbsp;</p>
+              <p className="uppercase font-bold">{userName}</p>
             </div>
 
             <h2 className="text-2xl lg:text-3xl font-bold leading-tight">
